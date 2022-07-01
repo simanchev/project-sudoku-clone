@@ -4,6 +4,7 @@
  * Договорись со своей командой, в каком формате возвращать этот результат.
  */
 function solve(boardString) {
+  
 }
 
 /**
@@ -22,6 +23,22 @@ function isSolved(board) {
 function prettyBoard(board) {
 
 }
+
+function getNumArr(str, arr) {
+  
+  const numArr = new Array(9).fill(new Array(9).fill(null));
+  const coord = [];
+
+  for (let i = 0; i < str.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      for (let k = 0; k < 9; k++) {
+        if (i === arr[j][k]) numArr[j][k] = str[i]
+      }
+    }
+  }
+
+}
+
 
 // Экспортировать функции для использования в другом файле (например, readAndSolve.js).
 module.exports = {
