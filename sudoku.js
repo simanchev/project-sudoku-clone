@@ -55,6 +55,63 @@ function getNumArr(str, arr) {
   return arrNum;
 }
 
+// function for creating an array with all string elements and their environment (row, column, block)
+
+function getNumsEnvironment(str) {
+  const arrInds = [arrIndexRow, arrIndexCol, arrIndexBlock]
+  const arrNums = arrInds.map(el => getNumArr(str, el))
+  const numsEnvirArr = [];
+
+  for (let i = 0; i < 81; i++) {
+    numsEnvirArr.push(new Array('index: ' + i))
+    numsEnvirArr[i].push(str[i])
+    
+    arrNums.forEach((el, index) => {
+      for (let j = 0; j < 9; j++) {
+        if (arrInds[index][j].includes(i)) numsEnvirArr[i].push(el[j])
+      }
+    })
+  }
+
+  return numsEnvirArr
+}
+
+
+// function for findning all unique numbers already presented in element's environment
+
+function getUniqNumsEnvir(arr) {
+  for (let i = 0; i < 81; i++) {
+    const numsEnvir = arr[i][2].concat(arr[i][3]).concat(arr[i][4])
+    const uniqNumsEnvir = [];
+
+    numsEnvir.map(el => {
+      if (!uniqNumsEnvir.includes(el) && el !== '-' ) uniqNumsEnvir.push(el)
+    })
+
+    arr[i].splice(2)
+    arr[i].push(uniqNumsEnvir)
+  }
+
+  return arr
+}
+
+// function for findning all unique numbers missing in element's environment
+function getMissingNumsEnvir(arr) {
+  const puzNums = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  let uniqMissingNums = [];
+  
+  arr.forEach(el => {
+      for (let i = 0; i < puzNums.length; i++) {
+        if (!el[2].includes(puzNums[i])) uniqMissingNums.push(puzNums[i]);
+      }
+    el.push(uniqMissingNums)
+    uniqMissingNums = [];
+  })
+
+  return arr;
+}
+
+
 
 /**
  * Принимает игровое поле в формате строки — как в файле sudoku-puzzles.txt.
@@ -63,20 +120,9 @@ function getNumArr(str, arr) {
  */
 function solve(boardString) {
 
-  const arrInds = [arrIndexRow, arrIndexCol, arrIndexBlock]
-  const arrNums = arrInds.map(el => getNumArr(boardString, el))
-  const arrSpread = [];
-
-  for (let i = 0; i < 81; i++) {
-    arrSpread.push(new Array('index is equal to ' + i))
-    arrSpread[i].push(boardString[i])
-    
-    arrNums.forEach((el, index) => {
-      for (let j = 0; j < 9; j++) {
-        if (arrInds[index][j].includes(i)) arrSpread[i].push(el[j])
-      }
-    })
-  }
+  const numsEnvir = getNumsEnvironment(boardString)
+  const uniqNumsEnvir = getUniqNumsEnvir(numsEnvir)
+  const uniqMissingNumsEnvir = getMissingNumsEnvir(uniqNumsEnvir)
 
 }
 
