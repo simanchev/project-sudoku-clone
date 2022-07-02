@@ -5,6 +5,10 @@
  */
 function solve(boardString) {
 
+  const arrNumRow = getNumArr(boardString, arrIndexRow);
+  const arrNumCol = getNumArr(boardString, arrIndexCol);
+  const arrNumBlock = getNumArr(boardString, arrIndexBlock);  
+
 }
 
 /**
@@ -24,12 +28,7 @@ function prettyBoard(board) {
 
 }
 
-function checkIndexC(arr) {
-  for (let i = 0; i < 81; i++) {
-    if (!arr.join(",").split(",").includes(i.toString())) return false;
-  }
-  return true;
-}
+// row/column/block arrays of indexes for a puzzle string
 
 const arrIndexRow = [
   [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -67,19 +66,22 @@ const arrIndexBlock = [
   [60, 61, 62, 69, 70, 71, 78, 79, 80],
 ];
 
-function getNumArr(str, arr) {
-  
-  const numArr = new Array(9).fill(new Array(9).fill(null));
-  const coord = [];
+// function for spreading a puzzle string into row/column/block arrays depending on element indexes
 
-  for (let i = 0; i < str.length; i++) {
-    for (let j = 0; j < arr.length; j++) {
-      for (let k = 0; k < 9; k++) {
-        if (i === arr[j][k]) numArr[j][k] = str[i]
-      }
-    }
+function getNumArr(str, arr) {
+  const arrInd = arr.reduce((prevArr, curArr) => prevArr.concat(curArr));
+  const arrNum = new Array(81).fill(null);
+  
+  for (let i = 0; i < arrInd.length; i++) {
+    arrNum[i] = str[arrInd[i]]
   }
 
+  for (let i = 0; i < 81; i += 9) {
+    arrNum.push(arrNum.slice(0, 9));
+    arrNum.splice(0,9);
+  }
+
+  return arrNum;
 }
 
 
