@@ -1,33 +1,3 @@
-/**
- * Принимает игровое поле в формате строки — как в файле sudoku-puzzles.txt.
- * Возвращает игровое поле после попытки его решить.
- * Договорись со своей командой, в каком формате возвращать этот результат.
- */
-function solve(boardString) {
-
-  const arrNumRow = getNumArr(boardString, arrIndexRow);
-  const arrNumCol = getNumArr(boardString, arrIndexCol);
-  const arrNumBlock = getNumArr(boardString, arrIndexBlock);  
-
-}
-
-/**
- * Принимает игровое поле в том формате, в котором его вернули из функции solve.
- * Возвращает булевое значение — решено это игровое поле или нет.
- */
-function isSolved(board) {
-
-}
-
-/**
- * Принимает игровое поле в том формате, в котором его вернули из функции solve.
- * Возвращает строку с игровым полем для последующего вывода в консоль.
- * Подумай, как симпатичнее сформировать эту строку.
- */
-function prettyBoard(board) {
-
-}
-
 // row/column/block arrays of indexes for a puzzle string
 
 const arrIndexRow = [
@@ -66,6 +36,7 @@ const arrIndexBlock = [
   [60, 61, 62, 69, 70, 71, 78, 79, 80],
 ];
 
+
 // function for spreading a puzzle string into row/column/block arrays depending on element indexes
 
 function getNumArr(str, arr) {
@@ -82,6 +53,48 @@ function getNumArr(str, arr) {
   }
 
   return arrNum;
+}
+
+
+/**
+ * Принимает игровое поле в формате строки — как в файле sudoku-puzzles.txt.
+ * Возвращает игровое поле после попытки его решить.
+ * Договорись со своей командой, в каком формате возвращать этот результат.
+ */
+function solve(boardString) {
+
+  const arrInds = [arrIndexRow, arrIndexCol, arrIndexBlock]
+  const arrNums = arrInds.map(el => getNumArr(boardString, el))
+  const arrSpread = [];
+
+  for (let i = 0; i < 81; i++) {
+    arrSpread.push(new Array('index is equal to ' + i))
+    arrSpread[i].push(boardString[i])
+    
+    arrNums.forEach((el, index) => {
+      for (let j = 0; j < 9; j++) {
+        if (arrInds[index][j].includes(i)) arrSpread[i].push(el[j])
+      }
+    })
+  }
+
+}
+
+/**
+ * Принимает игровое поле в том формате, в котором его вернули из функции solve.
+ * Возвращает булевое значение — решено это игровое поле или нет.
+ */
+function isSolved(board) {
+
+}
+
+/**
+ * Принимает игровое поле в том формате, в котором его вернули из функции solve.
+ * Возвращает строку с игровым полем для последующего вывода в консоль.
+ * Подумай, как симпатичнее сформировать эту строку.
+ */
+function prettyBoard(board) {
+
 }
 
 
