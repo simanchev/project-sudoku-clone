@@ -120,9 +120,28 @@ function getMissingNumsEnvir(arr) {
  */
 function solve(boardString) {
 
-  const numsEnvir = getNumsEnvironment(boardString)
-  const uniqNumsEnvir = getUniqNumsEnvir(numsEnvir)
-  const uniqMissingNumsEnvir = getMissingNumsEnvir(uniqNumsEnvir)
+  missingNumsQnt = boardString.split('').filter(el => el === '-').length;
+
+  for (let i = 0; i < missingNumsQnt; i++) {
+
+    const numsEnvir = getNumsEnvironment(boardString)
+    const uniqNumsEnvir = getUniqNumsEnvir(numsEnvir)
+    const arr = getMissingNumsEnvir(uniqNumsEnvir)
+
+    for (let j = 0; j < 81; j++) {
+      if (
+        arr[j][3].length === 1 && 
+        arr[j][3] !== [] && 
+        arr[j][1] === '-'
+        ) arr[j][1] = arr[j][3][0]
+    }
+
+    boardString = '';
+    arr.map(el => boardString += el[1]);
+  }
+
+  console.log(boardString)
+  return boardString;
 
 }
 
