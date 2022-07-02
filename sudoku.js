@@ -44,7 +44,7 @@ function getNumArr(str, arr) {
   const arrNum = new Array(81).fill(null);
   
   for (let i = 0; i < arrInd.length; i++) {
-    arrNum[i] = str[arrInd[i]]
+    arrNum[i] = str[arrInd[i]];
   }
 
   for (let i = 0; i < 81; i += 9) {
@@ -58,22 +58,22 @@ function getNumArr(str, arr) {
 // function for creating an array with all string elements and their environment (row, column, block)
 
 function getNumsEnvironment(str) {
-  const arrInds = [arrIndexRow, arrIndexCol, arrIndexBlock]
-  const arrNums = arrInds.map(el => getNumArr(str, el))
+  const arrInds = [arrIndexRow, arrIndexCol, arrIndexBlock];
+  const arrNums = arrInds.map(el => getNumArr(str, el));
   const numsEnvirArr = [];
 
   for (let i = 0; i < 81; i++) {
-    numsEnvirArr.push(new Array('index: ' + i))
-    numsEnvirArr[i].push(str[i])
+    numsEnvirArr.push(new Array('index: ' + i));
+    numsEnvirArr[i].push(str[i]);
     
     arrNums.forEach((el, index) => {
       for (let j = 0; j < 9; j++) {
-        if (arrInds[index][j].includes(i)) numsEnvirArr[i].push(el[j])
+        if (arrInds[index][j].includes(i)) numsEnvirArr[i].push(el[j]);
       }
     })
   }
 
-  return numsEnvirArr
+  return numsEnvirArr;
 }
 
 
@@ -81,15 +81,15 @@ function getNumsEnvironment(str) {
 
 function getUniqNumsEnvir(arr) {
   for (let i = 0; i < 81; i++) {
-    const numsEnvir = arr[i][2].concat(arr[i][3]).concat(arr[i][4])
+    const numsEnvir = arr[i][2].concat(arr[i][3]).concat(arr[i][4]);
     const uniqNumsEnvir = [];
 
     numsEnvir.map(el => {
-      if (!uniqNumsEnvir.includes(el) && el !== '-' ) uniqNumsEnvir.push(el)
+      if (!uniqNumsEnvir.includes(el) && el !== '-' ) uniqNumsEnvir.push(el);
     })
 
-    arr[i].splice(2)
-    arr[i].push(uniqNumsEnvir)
+    arr[i].splice(2);
+    arr[i].push(uniqNumsEnvir);
   }
 
   return arr
@@ -104,13 +104,12 @@ function getMissingNumsEnvir(arr) {
       for (let i = 0; i < puzNums.length; i++) {
         if (!el[2].includes(puzNums[i])) uniqMissingNums.push(puzNums[i]);
       }
-    el.push(uniqMissingNums)
+    el.push(uniqMissingNums);
     uniqMissingNums = [];
   })
 
   return arr;
 }
-
 
 
 /**
@@ -119,30 +118,26 @@ function getMissingNumsEnvir(arr) {
  * Договорись со своей командой, в каком формате возвращать этот результат.
  */
 function solve(boardString) {
-
   missingNumsQnt = boardString.split('').filter(el => el === '-').length;
 
   for (let i = 0; i < missingNumsQnt; i++) {
-
-    const numsEnvir = getNumsEnvironment(boardString)
-    const uniqNumsEnvir = getUniqNumsEnvir(numsEnvir)
-    const arr = getMissingNumsEnvir(uniqNumsEnvir)
+    const numsEnvir = getNumsEnvironment(boardString);
+    const uniqNumsEnvir = getUniqNumsEnvir(numsEnvir);
+    const arr = getMissingNumsEnvir(uniqNumsEnvir);
 
     for (let j = 0; j < 81; j++) {
       if (
         arr[j][3].length === 1 && 
         arr[j][3] !== [] && 
         arr[j][1] === '-'
-        ) arr[j][1] = arr[j][3][0]
+        ) arr[j][1] = arr[j][3][0];
     }
 
     boardString = '';
     arr.map(el => boardString += el[1]);
   }
 
-  console.log(boardString)
   return boardString;
-
 }
 
 /**
@@ -150,7 +145,7 @@ function solve(boardString) {
  * Возвращает булевое значение — решено это игровое поле или нет.
  */
 function isSolved(board) {
-
+  return (!board.includes('-')) ? true : false;
 }
 
 /**
@@ -159,7 +154,19 @@ function isSolved(board) {
  * Подумай, как симпатичнее сформировать эту строку.
  */
 function prettyBoard(board) {
+  const regexp = /(\d)/g;
+  let prettyBoard = '';
 
+  for (let i = 0; i < 81; i += 9) {
+    if (i % 27 === 0) prettyBoard += ' ————————————————————————————— \n' ;
+    prettyBoard += '\|' + 
+                   board.slice(i, i + 3).replace(regexp, ' $1 ' ) + '\|' +
+                   board.slice(i + 3, i + 6).replace(regexp, ' $1 ') + '\|' +
+                   board.slice(i + 6, i + 9).replace(regexp, ' $1 ') + '\| \n'
+  }
+  prettyBoard += ' ————————————————————————————— ';
+
+  return prettyBoard;
 }
 
 
